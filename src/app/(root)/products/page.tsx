@@ -1,8 +1,9 @@
+export const dynamic = "force-dynamic";
+
 import { Card } from "@/components";
 import Filters from "@/components/Filters";
 import Sort from "@/components/Sort";
 import { parseFilterParams } from "@/lib/utils/query";
-import { getAllProducts } from "@/lib/actions/product";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -14,6 +15,7 @@ export default async function ProductsPage({
   const sp = await searchParams;
 
   const parsed = parseFilterParams(sp);
+  const { getAllProducts } = await import("@/lib/actions/product");
   const { products, totalCount } = await getAllProducts(parsed);
 
   const activeBadges: string[] = [];
@@ -73,6 +75,7 @@ export default async function ProductsPage({
                     subtitle={p.subtitle ?? undefined}
                     imageSrc={p.imageUrl ?? "/shoes/shoe-1.jpg"}
                     price={price}
+                    href={`/products/${p.id}`}
                   />
                 );
               })}
